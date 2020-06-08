@@ -1,5 +1,6 @@
 require('dotenv').config();
 messenger = require('./src/messenger');
+constants = require('constants');
 
 const 
     express = require('express'),
@@ -46,7 +47,7 @@ app.post('/webhook', (req, res) => {
             } else if (webhook_event.hasOwnProperty("postback")) {
                 messenger.handlePostback(sender_psid, webhook_event.postback);
             } else {
-                console.log("Error: do not know what type of webhook_event this is"); // TODO: add error handling
+                console.log(constants.ERROR_POSTBACK); // TODO: add error handling
             }
 
         });
