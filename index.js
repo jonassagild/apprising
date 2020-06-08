@@ -1,6 +1,6 @@
 require('dotenv').config();
 messenger = require('./src/messenger');
-constants = require('constants');
+constants = require('./src/constants');
 
 const 
     express = require('express'),

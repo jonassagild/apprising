@@ -1,4 +1,6 @@
 axios = require('axios');
+templates = require('./templates');
+constants = require('./constants');
 
 // access environment variables
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
@@ -42,32 +44,7 @@ function handleMessage(sender_psid, received_message) {
     let first_message = true;
     let message = "";
     if (first_message) {
-        message = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "button",
-                        "text": "Welcome! Do you want to play now?",
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Start a new game",
-                                "payload": "start_new_game"
-                            },
-                            {
-                                "type": "postback",
-                                "title": "Join a game",
-                                "payload": "join_a_game"
-                            },
-                            {
-                                "type": "postback",
-                                "title": "Not right now.",
-                                "payload": "something"
-                            }
-                        ]
-                    }
-                }
-            }
+        message = createFirstMessage();
     } else {
         message = {
             "text": received_message.text.toLowerCase()
@@ -91,6 +68,21 @@ function handlePostback(sender_psid, postback) {
     };
     callSendAPI(sender_psid, message);
 }
+
+/**
+ *
+ * @returns {{attachment: {payload: {buttons: *, template_type: string, text: *}, type: string}}}
+ */
+function createFirstMessage() {
+    let buttons = [
+        templates.postbackButtonTemplate("Start a new game", "start_new_game"),
+        templates.postbackButtonTemplate("Join a game", "join_game"),
+        templates.postbackButtonTemplate("Not right now.", "something")
+    ];
+    let message = templates.buttonTemplate(constants.WELCOME_MSG, buttons);
+    return message;
+}
+
 
 module.exports = {
     handleMessage: handleMessage,
