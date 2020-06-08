@@ -1,6 +1,3 @@
-
-// TODO: make button template
-
 /**
  *
  * @param title
